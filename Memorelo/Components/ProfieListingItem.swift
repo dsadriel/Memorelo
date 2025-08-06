@@ -58,7 +58,7 @@ struct ProfieListingItem: View {
                         Text(relation)
                             .font(.system(.footnote, weight: .semibold))
                             .foregroundStyle(Color.SystemColors.labelsPrimary)
-                        Text(" • \(age) old")
+                        Text(" • \(age)")
                             .font(.footnote)
                             .foregroundStyle(Color.SystemColors.labelsSecondary)
                     }

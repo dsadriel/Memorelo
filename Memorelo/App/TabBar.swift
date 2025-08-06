@@ -12,13 +12,15 @@ struct TabBar: View {
         TabView {
             Tab("Visão Geral", systemImage: "tray.full") {
                 NavigationStack {
-                    EmptyView()
+                    OverviewView()
                 }
             }
 
             Tab("Memórias", systemImage: "photo.stack") {
                 NavigationStack {
-                    EmptyView()
+                    Group{
+                        Text("Not yet implemented")
+                    }
                 }
             }
 
