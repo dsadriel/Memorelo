@@ -24,7 +24,7 @@ struct MemoriesEmptyState: View {
                 }
             }
         }
-        .frame(width: 361, height: 200)
+        .frame(minWidth: 361, minHeight: 200, maxHeight: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [20, 10]))

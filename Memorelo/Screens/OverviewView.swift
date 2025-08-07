@@ -20,7 +20,6 @@ struct OverviewView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-
                 VStack(alignment: .leading, spacing: 8) {
                     headerText("Destaque")
                     MemoriesEmptyState()
@@ -35,12 +34,11 @@ struct OverviewView: View {
 
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack {
-                            ForEach(MemoreloApp.activitySuggestions.shuffled(), id: \.self) { suggestion in
+                            ForEach(MemoreloApp.activitySuggestions, id: \.self) { suggestion in
                                 SuggestionCard(suggestion)
                             }
                         }
                         .scrollTargetLayout()
-
 
                     }
                     .scrollTargetBehavior(.viewAligned)

@@ -34,6 +34,8 @@ struct ProfieListingItem: View {
     var imageSize: CGFloat {
         profileStyle == .user ? 94 : 78
     }
+    
+    @State var isProfileDetailExpanded: Bool = false
 
     var body: some View {
         HStack(spacing: 8) {
@@ -74,6 +76,12 @@ struct ProfieListingItem: View {
                     .foregroundStyle(.solidPurple)
             }
             .padding(.horizontal, 8)
+        }
+        .onTapGesture {
+            isProfileDetailExpanded.toggle()
+        }
+        .sheet(isPresented: $isProfileDetailExpanded){
+            EmptyView()
         }
     }
 }

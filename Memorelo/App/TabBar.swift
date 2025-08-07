@@ -18,9 +18,7 @@ struct TabBar: View {
 
             Tab("Memórias", systemImage: "photo.stack") {
                 NavigationStack {
-                    Group{
-                        Text("Not yet implemented")
-                    }
+                    MemoriesView()
                 }
             }
 
