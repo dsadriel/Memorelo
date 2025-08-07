@@ -36,7 +36,7 @@ struct SuggestionCard: View {
         let ascii = Int(title.first?.asciiValue ?? 0)
         let index = (title.count + ascii) % ColorfulStyle.allCases.count
         let color = ColorfulStyle.allCases[index]
-        
+
         self.init(color: color, title: title, description: description, goal: goal, duration: duration)
     }
 
@@ -53,7 +53,7 @@ struct SuggestionCard: View {
 
                 Text(description)
                     .font(.body)
-                    .foregroundStyle(Color.SystemColors.labelsPrimary)
+                    .foregroundStyle(.labelsPrimary)
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -63,7 +63,7 @@ struct SuggestionCard: View {
             HStack(spacing: 4) {
                 Text(goal)
                     .font(.caption2)
-                    .foregroundStyle(Color.SystemColors.labelsSecondary)
+                    .foregroundStyle(.labelsSecondary)
 
                 Spacer()
 

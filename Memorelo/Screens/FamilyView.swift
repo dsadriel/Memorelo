@@ -10,7 +10,7 @@ import SwiftUI
 struct FamilyView: View {
     @State var isArchivedMemberListPresented: Bool = false
     @State var isAddMemberPresented: Bool = false
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -19,7 +19,7 @@ struct FamilyView: View {
                 VStack(spacing: 8) {
                     Text("Membros")
                         .font(.headline)
-                        .foregroundStyle(Color.SystemColors.labelsPrimary)
+                        .foregroundStyle(.labelsPrimary)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     ProfieListingItem(name: "João Pedro", relation: "Sobrinho", age: "11 anos")
@@ -34,7 +34,7 @@ struct FamilyView: View {
                     isArchivedMemberListPresented.toggle()
                 }
                 .font(.footnote)
-                .foregroundStyle(Color.SystemColors.labelsSecondary)
+                .foregroundStyle(.labelsSecondary)
             }
         }
         .padding()
@@ -50,14 +50,13 @@ struct FamilyView: View {
                 }
             }
         }
-        
-        .sheet(isPresented: $isArchivedMemberListPresented){
+
+        .sheet(isPresented: $isArchivedMemberListPresented) {
             EmptyView()
         }
-        .sheet(isPresented: $isAddMemberPresented){
+        .sheet(isPresented: $isAddMemberPresented) {
             EmptyView()
         }
-        
 
     }
 }

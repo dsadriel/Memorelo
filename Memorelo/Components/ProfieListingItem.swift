@@ -34,7 +34,7 @@ struct ProfieListingItem: View {
     var imageSize: CGFloat {
         profileStyle == .user ? 94 : 78
     }
-    
+
     @State var isProfileDetailExpanded: Bool = false
 
     var body: some View {
@@ -43,26 +43,26 @@ struct ProfieListingItem: View {
                 .frame(width: imageSize, height: imageSize)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(Color.SystemColors.fillsSecondary)
+                        .foregroundStyle(.fillsSecondary)
                 )
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(name)
                     .font(.system(profileStyle == .user ? .title3 : .subheadline, weight: .semibold))
-                    .foregroundStyle(Color.SystemColors.labelsPrimary)
+                    .foregroundStyle(.labelsPrimary)
 
                 if profileStyle == .user, let email {
                     Text(email)
                         .font(.footnote)
-                        .foregroundStyle(Color.SystemColors.labelsSecondary)
+                        .foregroundStyle(.labelsSecondary)
                 } else if let relation, let age {
                     HStack(spacing: 0) {
                         Text(relation)
                             .font(.system(.footnote, weight: .semibold))
-                            .foregroundStyle(Color.SystemColors.labelsPrimary)
+                            .foregroundStyle(.labelsPrimary)
                         Text(" • \(age)")
                             .font(.footnote)
-                            .foregroundStyle(Color.SystemColors.labelsSecondary)
+                            .foregroundStyle(.labelsSecondary)
                     }
 
                 }
@@ -80,7 +80,7 @@ struct ProfieListingItem: View {
         .onTapGesture {
             isProfileDetailExpanded.toggle()
         }
-        .sheet(isPresented: $isProfileDetailExpanded){
+        .sheet(isPresented: $isProfileDetailExpanded) {
             EmptyView()
         }
     }

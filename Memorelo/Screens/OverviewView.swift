@@ -13,7 +13,7 @@ struct OverviewView: View {
     func headerText(_ text: String) -> some View {
         Text(text)
             .font(.headline)
-            .foregroundStyle(Color.SystemColors.labelsPrimary)
+            .foregroundStyle(.labelsPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 

@@ -26,7 +26,7 @@ struct MemoreloButton: View {
         case .destructive:
             .solidRed
         case .disabled:
-            .SystemColors.labelsTertiary
+            .labelsTertiary
         }
     }
 
@@ -41,7 +41,7 @@ struct MemoreloButton: View {
         case .colorful(let style):
             style.solidColor
         case .disabled:
-            .SystemColors.fillsTertiary
+            .fillsTertiary
         }
     }
 
