@@ -13,6 +13,14 @@ struct FamilyView: View {
 
     @Query(filter: #Predicate<MemberProfile> {!$0.isArchived}) var members: [MemberProfile]
     @Query(filter: #Predicate<MemberProfile> {$0.isArchived}) var archivedMembers: [MemberProfile]
+    @Query var users: [UserProfile]
+    
+    var user: UserProfile {
+        guard let user = users.first else {
+            return UserProfile(name: "", email: "")
+        }
+        return user
+    }
 
     @State var isArchivedMemberListPresented: Bool = false
     @State var isAddMemberPresented: Bool = false
@@ -20,7 +28,7 @@ struct FamilyView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                ProfieListingItem(name: "Adriel de Souza", email: "adriel@email.com")
+                ProfieListingItem(user)
 
                 if !members.isEmpty {
                     VStack(spacing: 8) {
@@ -65,13 +73,19 @@ struct FamilyView: View {
                 }
             }
         }
-
         .sheet(isPresented: $isArchivedMemberListPresented) {
             ArchivedMembersView()
         }
 
         .sheet(isPresented: $isAddMemberPresented) {
             AddEditMemberView()
+        }
+        .onAppear {
+            if users.isEmpty {
+                let defaultUser = UserProfile(name: "Cuidador(a)", email: "cuidador_a@icloud.com")
+
+                modelContext.insert(defaultUser)
+            }
         }
 
     }

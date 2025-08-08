@@ -35,7 +35,7 @@ struct OverviewView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack {
                             ForEach(MemoreloApp.activitySuggestions, id: \.self) { suggestion in
-                                SuggestionCard(suggestion)
+                                MemoreloSuggestionCard(suggestion)
                             }
                         }
                         .scrollTargetLayout()
