@@ -17,6 +17,10 @@ struct ProfieListingItem: View {
     var email: String?
     var relation: String?
     var age: String?
+    var picture: Image?
+    var isArchived: Bool { member != nil ? member!.isArchived : false }
+
+    var member: MemberProfile?
 
     init(name: String, email: String) {
         self.profileStyle = .user
@@ -31,6 +35,16 @@ struct ProfieListingItem: View {
         self.age = age
     }
 
+    init(_ member: MemberProfile) {
+        self.init(name: member.name, relation: member.relation, age: member.ageString)
+
+        self.member = member
+
+        if let data = member.pictureData, let uiImage = UIImage(data: data) {
+            picture =  Image(uiImage: uiImage)
+        }
+    }
+
     var imageSize: CGFloat {
         profileStyle == .user ? 94 : 78
     }
@@ -39,12 +53,23 @@ struct ProfieListingItem: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "person.fill")
-                .frame(width: imageSize, height: imageSize)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(.fillsSecondary)
-                )
+            Group {
+                if let picture {
+                    picture
+                        .resizable()
+                        .scaledToFill()
+                        .clipped()
+                        .frame(width: imageSize, height: imageSize)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                } else {
+                    Image(systemName: "person.fill")
+                        .frame(width: imageSize, height: imageSize)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .foregroundStyle(.fillsSecondary)
+                        )
+                }
+            }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(name)
@@ -71,17 +96,29 @@ struct ProfieListingItem: View {
             Spacer()
 
             VStack {
-                Image(systemName: "chevron.right")
+                Image(systemName: isArchived ? "tray.and.arrow.up.fill" : "chevron.right")
                     .font(.headline)
                     .foregroundStyle(.solidPurple)
             }
             .padding(.horizontal, 8)
         }
         .onTapGesture {
-            isProfileDetailExpanded.toggle()
+            if isArchived {
+                withAnimation {
+                    member?.isArchived.toggle()
+                }
+            } else {
+                isProfileDetailExpanded.toggle()
+            }
         }
-        .sheet(isPresented: $isProfileDetailExpanded) {
-            EmptyView()
+        .navigationDestination(isPresented: $isProfileDetailExpanded) {
+            if profileStyle == .user {
+                EmptyView()
+            } else {
+                if let member {
+                    MemberDetailsView(member: member)
+                }
+            }
         }
     }
 }
