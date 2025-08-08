@@ -13,17 +13,17 @@ final class UserProfile: Identifiable {
     var id: UUID
     var name: String
     var email: String
-    var picture: URL?
+    var pictureData: Data?
     var birthday: Date?
 
     var isNotificationEnabled: Bool = true
     var notificationTime: Time
 
-    init(id: UUID, name: String, email: String, picture: URL? = nil, birthday: Date? = nil, isNotificationEnabled: Bool, notificationTime: Time) {
+    init(id: UUID = UUID(), name: String, email: String, pictureData: Data? = nil, birthday: Date? = nil, isNotificationEnabled: Bool = false, notificationTime: Time = .init(hour: 19, minute: 0)) {
         self.id = id
         self.name = name
         self.email = email
-        self.picture = picture
+        self.pictureData = pictureData
         self.birthday = birthday
         self.isNotificationEnabled = isNotificationEnabled
         self.notificationTime = notificationTime
