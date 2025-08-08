@@ -1,5 +1,5 @@
 //
-//  SuggestionCard.swift
+//  MemoreloSuggestionCard.swift
 //  Memorelo
 //
 //  Created by Adriel de Souza on 06/08/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SuggestionCard: View {
+struct MemoreloSuggestionCard: View {
     var color: ColorfulStyle
     var title: String
     var description: String
@@ -92,14 +92,14 @@ struct SuggestionCard: View {
 
 #Preview {
     VStack {
-        SuggestionCard(
+        MemoreloSuggestionCard(
             title: "Hora do desenho em família",
             description: "Todos desenham o que quiserem e depois compartilham suas criações.",
             goal: "Estimular a expressão criativa e promover conversas leves.",
 
             duration: 30
         )
-        SuggestionCard(
+        MemoreloSuggestionCard(
             title: "Fazer massinha caseira",
             description: "Produzam juntos massinha com farinha, sal e corante alimentício.",
             goal: "Desenvolver coordenação motora e criar oportunidades de aprendizado sensorial.",

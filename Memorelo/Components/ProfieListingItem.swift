@@ -36,12 +36,20 @@ struct ProfieListingItem: View {
     }
 
     init(_ member: MemberProfile) {
-        self.init(name: member.name, relation: member.relation, age: member.ageString)
+        self.init(name: member.name, relation: member.relation, age: member.birthday.ageString)
 
         self.member = member
 
-        if let data = member.pictureData, let uiImage = UIImage(data: data) {
-            picture =  Image(uiImage: uiImage)
+        if let pictureData = member.pictureData {
+            self.picture = Image(pictureData)
+        }
+    }
+
+    init(_ user: UserProfile) {
+        self.init(name: user.name, email: user.email)
+
+        if let pictureData = user.pictureData {
+            self.picture = Image(pictureData)
         }
     }
 
@@ -101,19 +109,24 @@ struct ProfieListingItem: View {
                     .foregroundStyle(.solidPurple)
             }
             .padding(.horizontal, 8)
+            .onTapGesture {
+                if isArchived {
+                    withAnimation {
+                        member?.isArchived.toggle()
+                    }
+                } else {
+                    isProfileDetailExpanded.toggle()
+                }
+            }
         }
         .onTapGesture {
-            if isArchived {
-                withAnimation {
-                    member?.isArchived.toggle()
-                }
-            } else {
+            if !isArchived {
                 isProfileDetailExpanded.toggle()
             }
         }
         .navigationDestination(isPresented: $isProfileDetailExpanded) {
             if profileStyle == .user {
-                EmptyView()
+                UserProfileView()
             } else {
                 if let member {
                     MemberDetailsView(member: member)

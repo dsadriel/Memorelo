@@ -52,8 +52,8 @@ struct MemoreloButton: View {
             Text(text)
                 .font(.system(.body, weight: .semibold))
                 .foregroundStyle(labelColor)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .fill(backgroundColor)
