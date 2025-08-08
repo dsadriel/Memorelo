@@ -59,8 +59,8 @@ struct MemoreloTextField: View {
                         leadingIcon()
                         Text(text)
                         trailingIcon()
-
                     }
+                    .padding(.all, 8)
                     .foregroundStyle(.labelsPrimary)
                     .font(.callout)
                 }
@@ -76,10 +76,10 @@ struct MemoreloTextField: View {
                 }
                 .foregroundStyle(style == .disabled ? .labelsTertiary : .labelsPrimary)
                 .font(.callout)
-                .padding(.all, 9)
+                .padding(.all, 8)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(style == .disabled ? .fillsTertiary : .backgroundsPrimary)
+                        .foregroundStyle(style == .disabled ? .fillsTertiary : .backgroundPrimary)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)

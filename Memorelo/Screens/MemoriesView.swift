@@ -13,19 +13,18 @@ struct MemoriesView: View {
     }
 
     var isEmpty: Bool = false
-    
+
     @State var visualizationStyle: VisualizationStyle = .timeline
-    
+
     @ViewBuilder
     func timelineContent() -> some View {
         Text("Linha do tempo")
     }
-    
+
     @ViewBuilder
     func galeryContent() -> some View {
         Text("Galeria")
     }
-    
 
     var body: some View {
         Group {
@@ -39,7 +38,7 @@ struct MemoriesView: View {
                         Text("Galeria").tag(VisualizationStyle.galery)
                     }
                     .pickerStyle(.segmented)
-                    
+
                     VStack {
                         switch visualizationStyle {
                         case .timeline:
@@ -61,6 +60,7 @@ struct MemoriesView: View {
                 Button {
                 } label: {
                     Image(systemName: "photo.badge.plus.fill")
+                        .fontWeight(.bold)
                         .foregroundStyle(.solidPurple)
                 }
             }

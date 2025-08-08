@@ -54,6 +54,7 @@ struct OverviewView: View {
                 Button {
                 } label: {
                     Image(systemName: "photo.badge.plus.fill")
+                        .fontWeight(.bold)
                         .foregroundStyle(.solidPurple)
                 }
             }
