@@ -5,6 +5,7 @@
 //  Created by Adriel de Souza on 07/08/25.
 //
 
+import SwiftData
 import SwiftUI
 
 struct MemberDetailsView: View {
@@ -12,11 +13,10 @@ struct MemberDetailsView: View {
 
     var member: MemberProfile
     var profilePicture: Image? {
-        if let data = member.pictureData, let uiImage = UIImage(data: data) {
-            return Image(uiImage: uiImage)
-        } else {
-            return nil
+        if let data = member.pictureData {
+            return Image(data)
         }
+        return nil
     }
 
     @State var isEditMemberSheetPresented: Bool = false
@@ -46,7 +46,7 @@ struct MemberDetailsView: View {
                 VStack(spacing: 0) {
                     Text(member.name)
                         .font(.system(.title, weight: .bold))
-                    Text(member.ageString)
+                    Text(member.birthday.ageString)
                         .font(.caption)
                 }
                 .foregroundStyle(.labelsPrimary)
@@ -62,7 +62,7 @@ struct MemberDetailsView: View {
                     .padding(.bottom, 7)
 
                 MemoreloTextField(text: .constant(member.relation), style: .readonly, title: "Relação")
-                MemoreloTextField(text: .constant(member.birthday.description), style: .readonly, title: "Data de nascimento")
+                MemoreloDateField(title: "Data de Nascimento", value: .constant(member.birthday), displayedComponents: [.date], readOnly: true)
             }
         }
         .padding()

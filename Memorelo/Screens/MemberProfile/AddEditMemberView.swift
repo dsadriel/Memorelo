@@ -2,7 +2,7 @@
 //  AddEditMemberView.swift
 //  Memorelo
 //
-//  Created by Adriel de Souza on 07/08/25.
+//  Created by Adriel de Souza on 08/08/25.
 //
 
 import PhotosUI
@@ -18,11 +18,10 @@ struct AddEditMemberView: View {
     @State var triedToSave: Bool = false
     @State var profilePictureData: Data?
     var profilePicture: Image? {
-        if let data = profilePictureData, let uiImage = UIImage(data: data) {
-            return Image(uiImage: uiImage)
-        } else {
-            return nil
+        if let profilePictureData {
+            return Image(profilePictureData)
         }
+        return nil
     }
     @State var imageSelection: PhotosPickerItem?
 
@@ -35,6 +34,16 @@ struct AddEditMemberView: View {
         } else {
             return isFilled
         }
+    }
+
+    var memberAgeString: String? {
+        if name.isEmpty { return nil }
+
+        let firstName: String
+        let dividerIndex = name.firstIndex(of: " ") ?? name.endIndex
+        firstName = String(name[..<dividerIndex])
+
+        return "\(firstName) tem \(birtday.ageString.lowercased())"
     }
 
     var body: some View {
@@ -101,9 +110,10 @@ struct AddEditMemberView: View {
                         style: triedToSave && relation.isEmpty ? .error : .default,
                         title: "Relação",
                         placeholder: "Filho",
-                        helperText: "Essa relação é visível somente para você."
+                        helperText: isEditing ? "A relação será alterada somente para você. Co-cuidadores devem alterar ela em seus próprios aplicativos." : "Essa relação é visível somente para você."
                     )
-                    MemoreloTextField(text: .constant("FIXXXX"), style: .readonly, title: "Data de nascimento")
+
+                    MemoreloDateField(title: "Data de Nascimento", value: $birtday, displayedComponents: [.date], helperText: memberAgeString)
                 }
             }
             .navigationTitle(isEditing ? "Editar Membro" : "Novo Membro")
