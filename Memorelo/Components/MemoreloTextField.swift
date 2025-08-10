@@ -21,6 +21,7 @@ struct MemoreloTextField: View {
     var helperText: String?
     var leadingIconName: String?
     var trailingIconName: String?
+    var lineLimit: ClosedRange<Int> = 1...1
 
     @ViewBuilder
     func trailingIcon() -> some View {
@@ -69,7 +70,8 @@ struct MemoreloTextField: View {
             if style != .readonly {
                 HStack( spacing: 8) {
                     leadingIcon()
-                    TextField(placeholder ?? title, text: $text)
+                    TextField(placeholder ?? title, text: $text, axis: .vertical)
+                        .lineLimit(lineLimit)
                         .disabled(style == .disabled || style == .readonly)
                     trailingIcon()
 
@@ -79,7 +81,7 @@ struct MemoreloTextField: View {
                 .padding(.all, 8)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(style == .disabled ? .fillsTertiary : .backgroundPrimary)
+                        .foregroundStyle(style == .disabled ? .fillsTertiary : .backgroundsTertiary)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -97,12 +99,13 @@ struct MemoreloTextField: View {
         }
     }
 }
+
 #Preview("All MemoreloTextField Variants") {
     ScrollView {
         VStack(alignment: .leading, spacing: 24) {
             Group {
                 // Default
-                MemoreloTextField(text: .constant(""), style: .default, title: "Default Field")
+                MemoreloTextField(text: .constant(""), style: .default, title: "Default Field", lineLimit: 5...10)
 
                 // Default with placeholder
                 MemoreloTextField(text: .constant(""), style: .default, title: "Field", placeholder: "Enter value")

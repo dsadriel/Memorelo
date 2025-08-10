@@ -5,8 +5,6 @@
 //  Created by Adriel de Souza on 08/08/25.
 //
 
-
-
 import SwiftUI
 
 struct MemoreloToggleField: View {

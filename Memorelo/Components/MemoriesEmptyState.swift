@@ -23,6 +23,7 @@ struct MemoriesEmptyState: View {
                         .foregroundStyle(.solidWashedPurple)
                 }
             }
+            MemoreloButton(text: "Salvar nova memória") {}
         }
         .frame(minWidth: 361, minHeight: 200, maxHeight: .infinity)
         .background(

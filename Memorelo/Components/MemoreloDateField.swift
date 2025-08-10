@@ -34,6 +34,7 @@ struct MemoreloDateField: View {
                     .foregroundStyle(.labelsSecondary)
                     .padding(.leading, 4)
                     .frame(maxWidth: .infinity, alignment: .trailing)
+                    .multilineTextAlignment(.trailing)
             }
         }
     }
