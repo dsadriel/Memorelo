@@ -39,7 +39,7 @@ struct EditUserView: View {
         let isFilled = !name.isEmpty
         return isFilled
             && (user.name != name || user.birthday != birtday
-                || user.pictureData != profilePictureData)
+                    || user.pictureData != profilePictureData)
     }
 
     var body: some View {
@@ -176,7 +176,7 @@ struct EditUserView: View {
                 profilePictureData = user.pictureData
             }
         }
-        .background(.backgroundSecondary)
+        .background(.backgroundsSecondary)
     }
 }
 

@@ -103,6 +103,8 @@ struct MemberDetailsView: View {
         }, message: {
             Text("Ao fazer isso, todas as memórias deste membro serão arquivas também, e não estarão mais disponíveis na galeria e linha do tempo.")
         })
+        .background(.backgroundsPrimary)
+
     }
 
 }

@@ -99,7 +99,7 @@ struct UserProfileView: View {
                     title: "Lembrar todo dia às",
                     value: $reminder,
                     displayedComponents: [.hourAndMinute],
-                )
+                    )
                 .onChange(of: reminder) {
                     let calendar = Calendar.current
                     let components = calendar.dateComponents([.hour, .minute], from: reminder)
@@ -143,6 +143,7 @@ struct UserProfileView: View {
         .sheet(isPresented: $isEditUserSheetPresented) {
             EditUserView()
         }
+        .background(.backgroundsPrimary)
     }
 
 }

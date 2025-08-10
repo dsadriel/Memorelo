@@ -14,7 +14,7 @@ struct FamilyView: View {
     @Query(filter: #Predicate<MemberProfile> {!$0.isArchived}) var members: [MemberProfile]
     @Query(filter: #Predicate<MemberProfile> {$0.isArchived}) var archivedMembers: [MemberProfile]
     @Query var users: [UserProfile]
-    
+
     var user: UserProfile {
         guard let user = users.first else {
             return UserProfile(name: "", email: "")
@@ -87,7 +87,7 @@ struct FamilyView: View {
                 modelContext.insert(defaultUser)
             }
         }
-
+        .background(.backgroundsPrimary)
     }
 }
 

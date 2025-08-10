@@ -120,8 +120,8 @@ struct AddEditMemberView: View {
             .scrollClipDisabled(true)
             .padding()
             .presentationDragIndicator(.visible)
-            .background(.backgroundSecondary)
-            .toolbarBackground(.backgroundSecondary)
+            .background(.backgroundsSecondary)
+            .toolbarBackground(.backgroundsSecondary)
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
@@ -167,7 +167,6 @@ struct AddEditMemberView: View {
                 }
             }
         }
-        .background(.backgroundSecondary)
     }
 
 }

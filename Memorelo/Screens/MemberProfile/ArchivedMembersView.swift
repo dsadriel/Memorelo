@@ -41,6 +41,7 @@ struct ArchivedMembersView: View {
                     }
                 }
             }
+            .background(.backgroundsSecondary)
         }
     }
 }
