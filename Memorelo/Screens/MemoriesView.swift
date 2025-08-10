@@ -15,10 +15,17 @@ struct MemoriesView: View {
     var isEmpty: Bool = false
 
     @State var visualizationStyle: VisualizationStyle = .timeline
+    @State var isNewMemorySheetPresented: Bool = false
+
 
     @ViewBuilder
     func timelineContent() -> some View {
-        Text("Linha do tempo")
+        LazyVStack(spacing: 0){
+            ForEach(1...20, id: \.self) { _ in
+                TimelineEntry(color: .green, title: "My Title", details: "Details", attachments: [.init(kind: .photo), .init(kind: .video), .init(kind: .audio), .init(kind: .audio), .init(kind: .audio),])
+            }
+        }
+        .clipped()
     }
 
     @ViewBuilder
@@ -33,11 +40,12 @@ struct MemoriesView: View {
                     .padding(.all, 16)
             } else {
                 ScrollView {
-                    Picker("What is your favorite color?", selection: $visualizationStyle) {
+                    Picker("", selection: $visualizationStyle) {
                         Text("Linha do Tempo").tag(VisualizationStyle.timeline)
                         Text("Galeria").tag(VisualizationStyle.galery)
                     }
                     .pickerStyle(.segmented)
+                    .padding(.horizontal, 16)
 
                     VStack {
                         switch visualizationStyle {
@@ -47,23 +55,27 @@ struct MemoriesView: View {
                             galeryContent()
                         }
                     }
+                    .padding(.horizontal, 16)
                 }
                 .padding(.top, 8)
             }
         }
-        .padding(.horizontal, 16)
-        .scrollClipDisabled(true)
         .frame(maxHeight: .infinity)
         .navigationTitle("Memórias")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    isNewMemorySheetPresented = true
                 } label: {
                     Image(systemName: "photo.badge.plus.fill")
                         .fontWeight(.bold)
                         .foregroundStyle(.solidPurple)
                 }
             }
+        }
+        .background(.backgroundsPrimary)
+        .sheet(isPresented: $isNewMemorySheetPresented){
+            AddMemoryStage1()
         }
     }
 }
