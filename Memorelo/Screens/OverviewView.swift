@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct OverviewView: View {
-
+    @State var isNewMemorySheetPresented: Bool = false
+    
     @ViewBuilder
     func headerText(_ text: String) -> some View {
         Text(text)
@@ -52,12 +53,17 @@ struct OverviewView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    isNewMemorySheetPresented = true
                 } label: {
                     Image(systemName: "photo.badge.plus.fill")
                         .fontWeight(.bold)
                         .foregroundStyle(.solidPurple)
                 }
             }
+        }
+        .background(.backgroundsPrimary)
+        .sheet(isPresented: $isNewMemorySheetPresented){
+            AddMemoryStage1()
         }
     }
 }
