@@ -16,6 +16,21 @@ struct MemoreloApp: App {
         }
         .modelContainer(for: [UserProfile.self, MemberProfile.self, Memory.self])
     }
+    
+    static let shortDateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "pt_BR")
+            formatter.dateFormat = "d MMM" // e.g. "10 ago."
+            return formatter
+        }()
+        
+        static let longDateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "pt_BR")
+            formatter.dateFormat = "d 'de' MMMM, yyyy" // e.g. "10 de agosto, 2025"
+            return formatter
+        }()
+    
 
     static let activitySuggestions: [ActivitySuggestion] = [
         .init(title: "Piquenique no parque",
