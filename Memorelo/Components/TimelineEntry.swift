@@ -10,50 +10,50 @@ import SwiftUI
 struct TimelineEntry: View {
 
     var color: ColorfulStyle
-    var title: String
-    var details: String
-    var attachments: [MemoryAttachment]
+    var memory: Memory
+
+    @State var isMemoryDetailsSheetPresented: Bool = false
 
     var body: some View {
         HStack(spacing: 8) {
-            Text("15 ago")
+            Text(MemoreloApp.shortDateFormatter.string(from: memory.date))
                 .font(.headline)
                 .foregroundStyle(color.solidColor)
                 .frame(minWidth: 65)
                 .padding(.trailing, 4)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Title")
+                Text(memory.title)
                     .font(.system(.title3, weight: .semibold))
                     .foregroundStyle(color.solidColor)
-                Text("Details")
+                Text(memory.details ?? "")
+                    .lineLimit(3)
                     .font(.body)
                     .foregroundStyle(.labelsPrimary)
                 HStack(spacing: 4) {
-                    let willShowMore = attachments.count > 4
-                    let limit: Int = willShowMore ? 3 : 4
-                    
-                    ForEach(attachments[0..<limit]) { att in
-                        switch att.kind {
-                        case .photo:
-                            MemoryAttachmentItem(color: color, photo: Image(.memoryPlaceholder))
-                        case .video:
-                            MemoryAttachmentItem(color: color, preview: Image(.memoryPlaceholder), duration: "2min")
-                        case .audio:
-                            MemoryAttachmentItem(color: color, audioDuration: "2min")
+                    let limit = memory.attachments.count > 4 ? min(memory.attachments.count, 3) : memory.attachments.count
+                    ForEach(memory.attachments[0..<limit]) { attachment in
+                        if let item = MemoryAttachmentItem(attachment) {
+                            item
+                        } else {
+                            MemoryAttachmentItem(color: .pink, moreAmount: 9999)
                         }
                     }
-                    if willShowMore {
-                        MemoryAttachmentItem(color: color, moreAmount: attachments.count - 3)
+                    if limit < memory.attachments.count {
+                        MemoryAttachmentItem(color: color, moreAmount: memory.attachments.count - limit)
                     }
                 }
                 .padding(.top, 4)
             }
             .padding(8)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .foregroundStyle(color.translucentColor)
             )
+            .onTapGesture {
+                isMemoryDetailsSheetPresented = true
+            }
             .padding(.vertical, 8)
         }
         .overlay(
@@ -63,9 +63,8 @@ struct TimelineEntry: View {
                 .padding(.leading, 69),
             alignment: .leading
         )
+        .sheet(isPresented: $isMemoryDetailsSheetPresented) {
+            MemoryDetails(memory: memory)
+        }
     }
-}
-
-#Preview {
-    TimelineEntry(color: .green, title: "My Title", details: "Details", attachments: [.init(kind: .photo), .init(kind: .video), .init(kind: .audio), .init(kind: .audio), .init(kind: .audio),])
 }

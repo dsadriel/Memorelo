@@ -16,34 +16,64 @@ struct MemoryAttachmentItem: View {
     var style: Style = .more
     var text: String?
     var image: Image?
+    var size: CGFloat
 
-    init(color: ColorfulStyle? = nil, audioDuration: String) {
+    init(color: ColorfulStyle? = nil, duration: String, size: CGFloat = 65) {
         self.color = color
         self.style = .audio
-        self.text = audioDuration
+        self.text = duration
+        self.size = size
     }
 
-    init(color: ColorfulStyle? = nil, moreAmount: Int) {
+    init(color: ColorfulStyle? = nil, moreAmount: Int, size: CGFloat = 65) {
         self.color = color
         self.style = .more
         self.text = "+\(moreAmount)"
+        self.size = size
     }
 
-    init(color: ColorfulStyle? = nil, photo: Image) {
+    init(color: ColorfulStyle? = nil, photo: Image, size: CGFloat = 65) {
         self.color = color
         self.style = .photo
         self.image = photo
+        self.size = size
     }
 
-    init(color: ColorfulStyle? = nil, preview: Image, duration: String) {
+    init(color: ColorfulStyle? = nil, preview: Image, duration: String, size: CGFloat = 65) {
         self.color = color
         self.style = .video
         self.image = preview
         self.text = duration
+        self.size = size
     }
-    
-    var size: CGFloat = 65
-    
+
+    init?(color: ColorfulStyle? = nil, _ attachment: MemoryAttachment, size: CGFloat = 65) {
+        switch attachment.kind {
+        case .photo:
+            if  let url = attachment.url,
+                let data = try? Data(contentsOf: url),
+                let image = Image(data) {
+                self.init(color: color, photo: image, size: size)
+                return
+            }
+        case .video:
+            if let previewURL = attachment.url,
+               let data = try? Data(contentsOf: previewURL),
+               let image = Image(data),
+               let durationString = attachment.duration?.asString {
+                self.init(color: color, preview: image, duration: durationString, size: size)
+                return
+            }
+        case .audio:
+            if let durationString = attachment.duration?.asString {
+                self.init(color: color, duration: durationString, size: size)
+                return
+            }
+        }
+
+        return nil
+    }
+
     @ViewBuilder
     func imageView() -> some View {
         Group {
@@ -66,9 +96,9 @@ struct MemoryAttachmentItem: View {
             case .photo:
                 imageView()
             case .video:
-                ZStack{
+                ZStack {
                     imageView()
-                    HStack(alignment: .center){
+                    HStack(alignment: .center) {
                         Image(systemName: "video")
                         Spacer()
                         Text(text ?? "")
@@ -76,10 +106,10 @@ struct MemoryAttachmentItem: View {
                     .foregroundStyle(.labelsInverted)
                     .padding(6)
                     .frame(maxWidth: .infinity)
-                    .background(color?.solidColor ?? .fillsSecondary)
+                    .background(color?.solidColor ?? .solidPurple)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                 }
-                
+
             case .audio, .more:
                 Image(systemName: style == .audio ? "waveform.badge.microphone" : "photo.stack")
                     .font(.system(.body, weight: .semibold))
@@ -89,12 +119,12 @@ struct MemoryAttachmentItem: View {
 
             }
         }
-        .foregroundStyle(color?.solidColor ?? .fillsSecondary)
+        .foregroundStyle(color?.solidColor ?? .solidPurple)
         .frame(width: size, height: size)
         .font(.caption2)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .foregroundStyle(color?.translucentColor ?? .backgroundsTertiary)
+                .foregroundStyle(color?.translucentColor ?? .translucentPurple)
         )
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
@@ -102,7 +132,7 @@ struct MemoryAttachmentItem: View {
 
 #Preview {
     MemoryAttachmentItem(color: .blue, moreAmount: 10)
-    MemoryAttachmentItem(color: .yellow, audioDuration: "2min")
+    MemoryAttachmentItem(color: .yellow, duration: "2min")
     MemoryAttachmentItem(color: .green, photo: Image(.memoryPlaceholder))
     MemoryAttachmentItem(color: .green, preview: Image(.memoryPlaceholder), duration: "2min")
 }
