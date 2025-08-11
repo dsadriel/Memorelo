@@ -12,6 +12,10 @@ import Foundation
 final class MemberProfile: Identifiable {
     var id: UUID
     var name: String
+    var firstName: String {
+        let dividerIndex = name.firstIndex(of: " ") ?? name.endIndex
+        return String(name[..<dividerIndex])
+    }
     var relation: String
     var birthday: Date
     var pictureData: Data?
