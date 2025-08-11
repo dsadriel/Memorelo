@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TabBar: View {
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(filter: #Predicate<MemoryAttachment> {$0.attachedTo == nil}) var loseAttachments: [MemoryAttachment]
+    
     var body: some View {
         TabView {
-            Tab("Visão Geral", systemImage: "tray.full") {
-                NavigationStack {
-                    OverviewView()
-                }
-            }
+//            Tab("Visão Geral", systemImage: "tray.full") {
+//                NavigationStack {
+//                    OverviewView()
+//                }
+//            }
 
             Tab("Memórias", systemImage: "photo.stack") {
                 NavigationStack {
@@ -29,6 +34,12 @@ struct TabBar: View {
             }
         }
         .tint(.solidPurple)
+        .onAppear{
+            for loseAttachment in loseAttachments {
+                loseAttachment.deleteFromFileManager()
+                modelContext.delete(loseAttachment)
+            }
+        }
     }
 }
 
