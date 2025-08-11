@@ -6,23 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MemoriesView: View {
     enum VisualizationStyle: Int {
         case timeline, galery
     }
 
-    var isEmpty: Bool = false
-
     @State var visualizationStyle: VisualizationStyle = .timeline
     @State var isNewMemorySheetPresented: Bool = false
+    @State var isMemoryDetailsPresented: Bool = false
+    @State var selectedMemory: Memory?
 
+    @Query(sort: \Memory.date, order: .reverse) var memories: [Memory]
+    @Query(sort: \MemoryAttachment.date, order: .reverse) var attachments: [MemoryAttachment]
 
     @ViewBuilder
     func timelineContent() -> some View {
-        LazyVStack(spacing: 0){
-            ForEach(1...20, id: \.self) { _ in
-                TimelineEntry(color: .green, title: "My Title", details: "Details", attachments: [.init(kind: .photo), .init(kind: .video), .init(kind: .audio), .init(kind: .audio), .init(kind: .audio),])
+        LazyVStack(spacing: 0) {
+            ForEach(memories) {memory in
+                TimelineEntry(color: .green, memory: memory)
             }
         }
         .clipped()
@@ -30,14 +33,25 @@ struct MemoriesView: View {
 
     @ViewBuilder
     func galeryContent() -> some View {
-        Text("Galeria")
+        FlowLayout(spacing: 8) {
+            ForEach(attachments) {attachment in
+                MemoryAttachmentItem(attachment, size: 85)?.onTapGesture {
+                    if let memory = attachment.attachedTo {
+                        isMemoryDetailsPresented = true
+                        selectedMemory = memory
+                    }
+                }
+            }
+        }
     }
 
     var body: some View {
         Group {
-            if isEmpty {
-                MemoriesEmptyState()
-                    .padding(.all, 16)
+            if memories.isEmpty {
+                MemororeloEmptyState {
+                    isNewMemorySheetPresented = true
+                }
+                .padding(.all, 16)
             } else {
                 ScrollView {
                     Picker("", selection: $visualizationStyle) {
@@ -56,12 +70,12 @@ struct MemoriesView: View {
                         }
                     }
                     .padding(.horizontal, 16)
+                    .padding(.top, 8)
                 }
-                .padding(.top, 8)
             }
         }
-        .frame(maxHeight: .infinity)
         .navigationTitle("Memórias")
+        .frame(maxHeight: .infinity)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -74,8 +88,13 @@ struct MemoriesView: View {
             }
         }
         .background(.backgroundsPrimary)
-        .sheet(isPresented: $isNewMemorySheetPresented){
+        .sheet(isPresented: $isNewMemorySheetPresented) {
             AddMemoryStage1()
+        }
+        .sheet(isPresented: $isMemoryDetailsPresented) {
+            if let selectedMemory {
+                MemoryDetails(memory: selectedMemory)
+            }
         }
     }
 }

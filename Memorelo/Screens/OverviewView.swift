@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OverviewView: View {
     @State var isNewMemorySheetPresented: Bool = false
-    
+
     @ViewBuilder
     func headerText(_ text: String) -> some View {
         Text(text)
@@ -23,11 +23,14 @@ struct OverviewView: View {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
                     headerText("Destaque")
-                    MemoriesEmptyState()
+                    MemororeloEmptyState {
+                        isNewMemorySheetPresented = true
+                    }
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
                     headerText("Próximos marcos")
+                    Spacer()
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -62,7 +65,7 @@ struct OverviewView: View {
             }
         }
         .background(.backgroundsPrimary)
-        .sheet(isPresented: $isNewMemorySheetPresented){
+        .sheet(isPresented: $isNewMemorySheetPresented) {
             AddMemoryStage1()
         }
     }

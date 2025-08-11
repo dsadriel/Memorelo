@@ -21,6 +21,18 @@ struct ArchivedMembersView: View {
                     if !archivedMembers.isEmpty {
                         ForEach(archivedMembers) { member in
                             ProfieListingItem(member)
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        withAnimation {
+                                            modelContext.delete(member)
+                                            
+                                            try? modelContext.save()
+                                        }
+                                    } label: {
+                                        Label("Excluir membro", systemImage: "trash")
+                                            .tint(.red)
+                                    }
+                                }
                         }
                     } else {
                         Text("Sem membros arquivados")
