@@ -7,23 +7,39 @@
 
 import SwiftUI
 
-struct MemoriesEmptyState: View {
+struct MemororeloEmptyState: View {
+    var iconName: String
+    var title: String
+    var subtitle: String
+    var actionText: String
+    var action: () -> Void
+
+    init(iconName: String = "tray", title: String = "Nenhuma memória registrada.", subtitle: String = "Você pode salvar fotos, vídeos ou áudios.", actionText: String = "Salvar nova memória", action: @escaping () -> Void = {}) {
+        self.iconName = iconName
+        self.title = title
+        self.subtitle = subtitle
+        self.actionText = actionText
+        self.action = action
+    }
+
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 4) {
-                Image(systemName: "tray")
+                Image(systemName: iconName)
                     .font(.system(.title2, weight: .bold))
                     .foregroundStyle(.solidWashedPurple)
                 VStack {
-                    Text("Nenhuma memória registrada.")
+                    Text(title)
                         .font(.system(.callout, weight: .semibold))
                         .foregroundStyle(.solidWashedPurple)
-                    Text("Você pode salvar fotos, vídeos ou áudios.")
+                    Text(subtitle)
                         .font(.system(.callout, weight: .regular))
                         .foregroundStyle(.solidWashedPurple)
                 }
             }
-            MemoreloButton(text: "Salvar nova memória") {}
+            MemoreloButton(text: actionText) {
+                action()
+            }
         }
         .frame(minWidth: 361, minHeight: 200, maxHeight: .infinity)
         .background(
@@ -35,5 +51,5 @@ struct MemoriesEmptyState: View {
 }
 
 #Preview {
-    MemoriesEmptyState()
+    MemororeloEmptyState()
 }
