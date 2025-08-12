@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MemoryAttachmentItem: View {
     enum Style {
-        case photo, video, audio, more
+        case photo, video, audio, more, error
     }
 
     var color: ColorfulStyle?
@@ -47,6 +47,12 @@ struct MemoryAttachmentItem: View {
         self.size = size
     }
 
+    init(color: ColorfulStyle? = nil, size: CGFloat = 65){
+        self.color = color
+        self.style = .error
+        self.size = size
+    }
+    
     init?(color: ColorfulStyle? = nil, _ attachment: MemoryAttachment, size: CGFloat = 65) {
         switch attachment.kind {
         case .photo:
@@ -116,7 +122,9 @@ struct MemoryAttachmentItem: View {
                 if let text = text {
                     Text(text)
                 }
-
+            case .error:
+                Image(systemName: "photo.badge.exclamationmark")
+                    .font(.system(.body, weight: .semibold))
             }
         }
         .foregroundStyle(color?.solidColor ?? .solidPurple)

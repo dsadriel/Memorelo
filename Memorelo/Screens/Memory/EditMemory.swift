@@ -29,6 +29,7 @@ struct EditMemory: View {
 
     @State var isPhotoPickerPresented: Bool = false
     @State var isDeleteMemoryAlertPresented: Bool = false
+    @State var isParticipantsSheetPresented: Bool = false
 
     func handleTagFieldChange() {
         if tagsField.last == "," {
@@ -116,14 +117,14 @@ struct EditMemory: View {
 
                     VStack(spacing: 8) {
                         HStack {
-                            Text("Quem estava lá")
+                            Text("Quem estava lá?")
                                 .font(.body)
                                 .foregroundStyle(.labelsPrimary)
 
                             Spacer()
 
                             Button {
-
+                                isParticipantsSheetPresented = true
                             } label: {
                                 Image(systemName: "plus.circle")
                                     .font(.system(.body, weight: .bold))
@@ -135,7 +136,39 @@ struct EditMemory: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        FlowLayout {
+                            ForEach(participants){member in
+                                HStack(spacing: 8) {
+                                    if let pictureData = member.pictureData, let image = Image(pictureData) {
+                                        image
+                                            .resizable()
+                                            .frame(width: 64, height: 64)
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 8)
+                                            )
+                                    }
+                                    
+                                    Text(member.firstName)
+                                        .font(.body)
+                                }
+                                .foregroundStyle(.solidPurple)
+                                .padding(8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .foregroundStyle(.translucentPurple)
+                                )
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        participants.removeAll(where: { $0.id == member.id })
+                                    } label: {
+                                        Text("Remover").tint(.red)
+                                    }
+                                }
+                            }
+                        }.frame(maxWidth: .infinity, alignment: .leading)
                     }
+
 
                     // MARK: - Location
 
@@ -251,6 +284,9 @@ struct EditMemory: View {
                 location = memory.location ?? ""
                 details = memory.details ?? ""
                 participants = memory.participants
+            }
+            .sheet(isPresented: $isParticipantsSheetPresented){
+                SelectParticipants(selectedMembers: $participants)
             }
             .alert("Excluir Memória", isPresented: $isDeleteMemoryAlertPresented, actions: {
                 Button(role: .destructive) {

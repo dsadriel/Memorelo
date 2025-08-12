@@ -20,7 +20,6 @@ struct MemoryDetails: View {
 
     var body: some View {
         NavigationStack {
-
             ScrollView {
                 VStack(spacing: 8) {
                     Text(memory.title)
@@ -36,7 +35,7 @@ struct MemoryDetails: View {
                             image
                                 .resizable()
                         } else {
-                            Image(systemName: "photo")
+                            Image(systemName: "photo.badge.exclamationmark")
                                 .font(.largeTitle)
                                 .foregroundStyle(.solidPurple)
                         }
@@ -71,28 +70,29 @@ struct MemoryDetails: View {
 
                     FlowLayout {
                         ForEach(memory.participants) { member in
-
-                            HStack {
+                            HStack(spacing: 8) {
                                 if let pictureData = member.pictureData, let image = Image(pictureData) {
                                     image
+                                        .resizable()
+                                        .frame(width: 60, height: 60)
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 8)
+                                        )
                                 }
-                                Text(member.firstName)
-                                    .font(.system(.body, weight: .semibold))
-                                Text("tinha")
+                                
+                                Text("\(Text(member.firstName).fontWeight(.semibold)) tinha \(Text(member.birthday.ageString(at: memory.date).lowercased()).fontWeight(.semibold))")
                                     .font(.body)
-                                Text(member.birthday.ageString(at: memory.date))
-                                    .font(.system(.body, weight: .semibold))
+                                    .multilineTextAlignment(.leading)
                             }
-//                            .foregroundStyle(.solidPurple)
+                            .foregroundStyle(.solidPurple)
                             .padding(16)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-//                                    .foregroundStyle(.translucentPurple)
+                                    .foregroundStyle(.translucentPurple)
                             )
-                            .frame(minWidth: .infinity)
+                            .frame(maxWidth: 300)
                         }
-
-                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    }.frame(maxWidth: .infinity, alignment: .center)
 
                     if let details = memory.details, !details.isEmpty {
                         Text(details)

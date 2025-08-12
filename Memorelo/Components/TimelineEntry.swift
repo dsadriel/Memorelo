@@ -26,17 +26,21 @@ struct TimelineEntry: View {
                 Text(memory.title)
                     .font(.system(.title3, weight: .semibold))
                     .foregroundStyle(color.solidColor)
-                Text(memory.details ?? "")
-                    .lineLimit(3)
-                    .font(.body)
-                    .foregroundStyle(.labelsPrimary)
+                
+                if let details = memory.details {
+                    Text(details)
+                        .lineLimit(3)
+                        .font(.body)
+                        .foregroundStyle(.labelsPrimary)
+                }
+               
                 HStack(spacing: 4) {
                     let limit = memory.attachments.count > 4 ? min(memory.attachments.count, 3) : memory.attachments.count
                     ForEach(memory.attachments[0..<limit]) { attachment in
                         if let item = MemoryAttachmentItem(attachment) {
                             item
                         } else {
-                            MemoryAttachmentItem(color: .pink, moreAmount: 9999)
+                            MemoryAttachmentItem(color: color)
                         }
                     }
                     if limit < memory.attachments.count {

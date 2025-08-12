@@ -33,7 +33,7 @@ struct MemoriesView: View {
 
     @ViewBuilder
     func galeryContent() -> some View {
-        FlowLayout(spacing: 8) {
+        FlowLayout(spacing: 4) {
             ForEach(attachments) {attachment in
                 MemoryAttachmentItem(attachment, size: 85)?.onTapGesture {
                     if let memory = attachment.attachedTo {

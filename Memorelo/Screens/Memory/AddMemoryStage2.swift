@@ -21,6 +21,7 @@ struct AddMemoryStage2: View {
 
     @State var didUserSetDateManually: Bool = false
     @State var isNextStagePresented: Bool = false
+    @State var isParticipantsSheetPresented: Bool = false
 
     var body: some View {
         ScrollView {
@@ -51,7 +52,7 @@ struct AddMemoryStage2: View {
                         Spacer()
 
                         Button {
-
+                            isParticipantsSheetPresented = true
                         } label: {
                             Image(systemName: "plus.circle")
                                 .font(.system(.body, weight: .bold))
@@ -63,6 +64,37 @@ struct AddMemoryStage2: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    FlowLayout {
+                        ForEach(participants){member in
+                            HStack(spacing: 8) {
+                                if let pictureData = member.pictureData, let image = Image(pictureData) {
+                                    image
+                                        .resizable()
+                                        .frame(width: 64, height: 64)
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 8)
+                                        )
+                                }
+                                
+                                Text(member.firstName)
+                                    .font(.body)
+                            }
+                            .foregroundStyle(.solidPurple)
+                            .padding(8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .foregroundStyle(.translucentPurple)
+                            )
+                            .contextMenu {
+                                Button(role: .destructive) {
+                                    participants.removeAll(where: { $0.id == member.id })
+                                } label: {
+                                    Text("Remover").tint(.red)
+                                }
+                            }
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 MemoreloTextField(
@@ -90,6 +122,9 @@ struct AddMemoryStage2: View {
         }
         .navigationDestination(isPresented: $isNextStagePresented) {
             AddMemoryStage3(sheetDismiss: sheetDismiss, memoryTitle: $memoryTitle, attachments: $attachments, memoryDate: $memoryDate, details: $details, participants: $participants, location: $location)
+        }
+        .sheet(isPresented: $isParticipantsSheetPresented){
+            SelectParticipants(selectedMembers: $participants)
         }
     }
 }
