@@ -82,9 +82,9 @@ struct EditMemory: View {
                             .frame(minHeight: 361)
 
                         } else {
-                            FlowLayout(spacing: 8) {
+                            FlowLayout(spacing: 6) {
                                 ForEach(attachments) { attachment in
-                                    MemoryAttachmentItem(attachment, size: 85)
+                                    MemoryAttachmentItem(attachment, size: 80)
                                 }
                             }
                             .frame(maxWidth: .infinity)

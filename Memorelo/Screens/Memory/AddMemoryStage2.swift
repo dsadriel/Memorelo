@@ -91,7 +91,7 @@ struct AddMemoryStage2: View {
                                 Button(role: .destructive) {
                                     participants.removeAll(where: { $0.id == member.id })
                                 } label: {
-                                    Text("Remover").tint(.red)
+                                    Label("Remover", systemImage: "trash").tint(.red)
                                 }
                             }
                         }

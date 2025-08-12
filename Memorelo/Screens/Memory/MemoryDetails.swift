@@ -116,13 +116,13 @@ struct MemoryDetails: View {
             .presentationDragIndicator(.visible)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Editar") {
                         isEditMemorySheetPresented = true
                     }
                     .foregroundStyle(.solidPurple)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Fechar") {
                         dismiss()
                     }

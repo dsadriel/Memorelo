@@ -5,14 +5,14 @@
 //  Created by Adriel de Souza on 06/08/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct FamilyView: View {
     @Environment(\.modelContext) var modelContext
 
-    @Query(filter: #Predicate<MemberProfile> {!$0.isArchived}) var members: [MemberProfile]
-    @Query(filter: #Predicate<MemberProfile> {$0.isArchived}) var archivedMembers: [MemberProfile]
+    @Query(filter: #Predicate<MemberProfile> { !$0.isArchived }) var members: [MemberProfile]
+    @Query(filter: #Predicate<MemberProfile> { $0.isArchived }) var archivedMembers: [MemberProfile]
     @Query var users: [UserProfile]
 
     var user: UserProfile {
@@ -30,19 +30,21 @@ struct FamilyView: View {
             VStack(spacing: 24) {
                 ProfieListingItem(user)
 
-                if !members.isEmpty {
-                    VStack(spacing: 8) {
-                        Text("Membros")
-                            .font(.headline)
-                            .foregroundStyle(.labelsPrimary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-
+                VStack(spacing: 8) {
+                    Text("Membros")
+                        .font(.headline)
+                        .foregroundStyle(.labelsPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if !members.isEmpty {
                         ForEach(members) { member in
                             ProfieListingItem(member)
                         }
+                    } else {
+                        MemororeloEmptyState(iconName: "person.fill.questionmark", title: "Sua família está vazia", subtitle: "Adicione membros para salvar recordações.", actionText: "Adicionar membro"){
+                            isAddMemberPresented = true
+                        }
+                        .frame(maxHeight: .infinity)
                     }
-                } else {
-                    Text("Sem membros")
                 }
 
                 if !archivedMembers.isEmpty {

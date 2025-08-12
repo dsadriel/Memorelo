@@ -25,7 +25,6 @@ struct ArchivedMembersView: View {
                                     Button(role: .destructive) {
                                         withAnimation {
                                             modelContext.delete(member)
-
                                             try? modelContext.save()
                                         }
                                     } label: {
@@ -35,7 +34,7 @@ struct ArchivedMembersView: View {
                                 }
                         }
                     } else {
-                        Text("Sem membros arquivados")
+                        MemororeloEmptyState(iconName: "person.fill.questionmark", title: "Sem membros arquivados", subtitle: nil, actionText: nil){}
                     }
                 }
             }
@@ -43,6 +42,7 @@ struct ArchivedMembersView: View {
             .scrollClipDisabled(true)
             .navigationTitle("Membros arquivados")
             .toolbarTitleDisplayMode(.inline)
+            .presentationDetents([.medium])
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {

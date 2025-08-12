@@ -33,9 +33,7 @@ struct MemoreloSuggestionCard: View {
     init(title: String, description: String, goal: String, duration: Int) {
         // Generate a deterministic index based on the title's character count and first character's ASCII value
         // This ensures consistent color selection for the same title
-        let ascii = Int(title.first?.asciiValue ?? 0)
-        let index = (title.count + ascii) % ColorfulStyle.allCases.count
-        let color = ColorfulStyle.allCases[index]
+        let color = ColorfulStyle(from: title)
 
         self.init(color: color, title: title, description: description, goal: goal, duration: duration)
     }

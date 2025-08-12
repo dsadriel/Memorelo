@@ -22,6 +22,13 @@ enum ColorfulStyle: CaseIterable {
             .solidGreen
         }
     }
+    
+    init(from text: String){
+        let ascii = Int(text.first?.asciiValue ?? 0)
+        let index = (text.count + ascii) % ColorfulStyle.allCases.count
+        
+        self = ColorfulStyle.allCases[index]
+    }
 
     var translucentColor: Color {
         switch self {

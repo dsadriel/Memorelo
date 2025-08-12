@@ -13,6 +13,11 @@ struct TimelineEntry: View {
     var memory: Memory
 
     @State var isMemoryDetailsSheetPresented: Bool = false
+    
+    init(_ memory: Memory){
+        self.memory = memory
+        self.color = ColorfulStyle(from: memory.title)
+    }
 
     var body: some View {
         HStack(spacing: 8) {
