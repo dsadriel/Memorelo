@@ -15,7 +15,6 @@ struct MemoriesView: View {
 
     @State var visualizationStyle: VisualizationStyle = .timeline
     @State var isNewMemorySheetPresented: Bool = false
-    @State var isMemoryDetailsPresented: Bool = false
     @State var selectedMemory: Memory?
 
     @Query(sort: \Memory.date, order: .reverse) var memories: [Memory]
@@ -25,7 +24,7 @@ struct MemoriesView: View {
     func timelineContent() -> some View {
         LazyVStack(spacing: 0) {
             ForEach(memories) {memory in
-                TimelineEntry(color: .green, memory: memory)
+                TimelineEntry(memory)
             }
         }
         .clipped()
@@ -35,14 +34,15 @@ struct MemoriesView: View {
     func galeryContent() -> some View {
         FlowLayout(spacing: 4) {
             ForEach(attachments) {attachment in
-                MemoryAttachmentItem(attachment, size: 85)?.onTapGesture {
-                    if let memory = attachment.attachedTo {
-                        isMemoryDetailsPresented = true
-                        selectedMemory = memory
+                if let item = MemoryAttachmentItem(attachment, size: 85) {
+                    item.onTapGesture {
+                        if let memory = attachment.attachedTo {
+                            selectedMemory = memory
+                        }
                     }
                 }
             }
-        }
+        }.frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var body: some View {
@@ -74,6 +74,9 @@ struct MemoriesView: View {
                 }
             }
         }
+        .onTapGesture {
+            selectedMemory = nil
+        }
         .navigationTitle("Memórias")
         .frame(maxHeight: .infinity)
         .toolbar {
@@ -91,10 +94,8 @@ struct MemoriesView: View {
         .sheet(isPresented: $isNewMemorySheetPresented) {
             AddMemoryStage1()
         }
-        .sheet(isPresented: $isMemoryDetailsPresented) {
-            if let selectedMemory {
-                MemoryDetails(memory: selectedMemory)
-            }
+        .sheet(item: $selectedMemory) {
+            memory in MemoryDetails(memory: memory)
         }
     }
 }
