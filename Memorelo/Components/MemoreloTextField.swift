@@ -70,7 +70,7 @@ struct MemoreloTextField: View {
             if style != .readonly {
                 HStack( spacing: 8) {
                     leadingIcon()
-                    TextField(placeholder ?? title, text: $text, axis: .vertical)
+                    TextField(placeholder ?? title, text: $text, axis: lineLimit.upperBound > 1 ? .vertical : .horizontal)
                         .lineLimit(lineLimit)
                         .disabled(style == .disabled || style == .readonly)
                     trailingIcon()

@@ -115,18 +115,18 @@ struct AddMemoryStage1: View {
                 matching: .images,
                 photoLibrary: .shared()
             )
-            .onChange(of: pickedItems) { oldValue, newValue in
+            .onChange(of: pickedItems) { _, _ in
                 Task { @MainActor in
-                    
+
                     // Remove all attachments from the disk
                     for attachment in attachments {
                         attachment.deleteFromFileManager()
                     }
                     attachments.removeAll()
-                    
+
                     for item in pickedItems {
                         if let loadedData = try? await item.loadTransferable(type: Data.self),
-                           let newAttachment = MemoryAttachment(attachedTo: nil, kind: .photo, data: loadedData){
+                           let newAttachment = MemoryAttachment(attachedTo: nil, kind: .photo, data: loadedData) {
                             print("Sucess")
                             attachments.append(newAttachment)
                         } else {

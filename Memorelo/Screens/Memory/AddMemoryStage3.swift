@@ -81,15 +81,15 @@ struct AddMemoryStage3: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Salvar") {
                     let newMemory = Memory(title: memoryTitle, date: memoryDate, attachments: attachments, tags: tags, location: location, details: details, participants: participants)
-                    
+
                     for attachment in newMemory.attachments {
                         attachment.attachedTo = newMemory
                     }
 
                     modelContext.insert(newMemory)
-                    
+
                     try? modelContext.save()
-                    
+
                     sheetDismiss?()
                 }
             }

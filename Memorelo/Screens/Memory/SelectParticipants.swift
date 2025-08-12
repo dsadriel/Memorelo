@@ -15,7 +15,6 @@ struct SelectParticipants: View {
     @Binding var selectedMembers: [MemberProfile]
     @State private var sheetContentHeight: CGFloat = 0
 
-    
     var body: some View {
         FlowLayout {
             ForEach(members) { member in
@@ -24,12 +23,13 @@ struct SelectParticipants: View {
                     if let pictureData = member.pictureData, let image = Image(pictureData) {
                         image
                             .resizable()
+                            .scaledToFill()
                             .frame(width: 85, height: 85)
                             .clipShape(
                                 RoundedRectangle(cornerRadius: 8)
                             )
                     }
-                    
+
                     Text(member.firstName)
                         .font(.headline)
                 }

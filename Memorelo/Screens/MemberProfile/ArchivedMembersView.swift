@@ -25,7 +25,7 @@ struct ArchivedMembersView: View {
                                     Button(role: .destructive) {
                                         withAnimation {
                                             modelContext.delete(member)
-                                            
+
                                             try? modelContext.save()
                                         }
                                     } label: {

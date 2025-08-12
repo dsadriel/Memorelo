@@ -136,19 +136,20 @@ struct EditMemory: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
                         FlowLayout {
-                            ForEach(participants){member in
+                            ForEach(participants) {member in
                                 HStack(spacing: 8) {
                                     if let pictureData = member.pictureData, let image = Image(pictureData) {
                                         image
                                             .resizable()
+                                            .scaledToFill()
                                             .frame(width: 64, height: 64)
                                             .clipShape(
                                                 RoundedRectangle(cornerRadius: 8)
                                             )
                                     }
-                                    
+
                                     Text(member.firstName)
                                         .font(.body)
                                 }
@@ -168,7 +169,6 @@ struct EditMemory: View {
                             }
                         }.frame(maxWidth: .infinity, alignment: .leading)
                     }
-
 
                     // MARK: - Location
 
@@ -204,10 +204,10 @@ struct EditMemory: View {
                                 }
                         }
                     }.frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                     Spacer(minLength: 32)
-                    
-                    MemoreloButton(text: "Excluir", style: .destructive){
+
+                    MemoreloButton(text: "Excluir", style: .destructive) {
                         isDeleteMemoryAlertPresented = true
                     }
                 }
@@ -221,19 +221,19 @@ struct EditMemory: View {
                 matching: .images,
                 photoLibrary: .shared()
             )
-            .onChange(of: pickedItems) { oldValue, newValue in
+            .onChange(of: pickedItems) { _, _ in
                 Task { @MainActor in
-                    
+
                     // Remove all loose attachments
                     for attachment in attachments {
                         if attachment.attachedTo != nil { continue }
                         attachment.deleteFromFileManager()
                     }
                     attachments.removeAll()
-                    
+
                     for item in pickedItems {
                         if let loadedData = try? await item.loadTransferable(type: Data.self),
-                           let newAttachment = MemoryAttachment(attachedTo: nil, kind: .photo, data: loadedData){
+                           let newAttachment = MemoryAttachment(attachedTo: nil, kind: .photo, data: loadedData) {
                             print("Sucess")
                             attachments.append(newAttachment)
                         } else {
@@ -258,13 +258,13 @@ struct EditMemory: View {
                         memory.tags = tags
                         memory.location = location.isEmpty ? nil : location
                         memory.details = details.isEmpty ? nil : details
-                        
-                        //Remove old attachemnts
+
+                        // Remove old attachemnts
                         for oldAttachment in memory.attachments {
                             oldAttachment.deleteFromFileManager()
                             oldAttachment.attachedTo = nil
                         }
-                        
+
                         for newAttachment in attachments {
                             newAttachment.attachedTo = memory
                         }
@@ -285,21 +285,21 @@ struct EditMemory: View {
                 details = memory.details ?? ""
                 participants = memory.participants
             }
-            .sheet(isPresented: $isParticipantsSheetPresented){
+            .sheet(isPresented: $isParticipantsSheetPresented) {
                 SelectParticipants(selectedMembers: $participants)
             }
             .alert("Excluir Memória", isPresented: $isDeleteMemoryAlertPresented, actions: {
                 Button(role: .destructive) {
                     for attachment in memory.attachments {
                         attachment.deleteFromFileManager()
-                        
+
                         modelContext.delete(attachment)
                     }
-                    
+
                     modelContext.delete(memory)
-                    
+
                     try? modelContext.save()
-                    
+
                     dismiss()
                 } label: {
                     Text("Excluir")

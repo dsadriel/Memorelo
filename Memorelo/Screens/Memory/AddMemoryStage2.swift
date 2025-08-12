@@ -64,19 +64,20 @@ struct AddMemoryStage2: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                     FlowLayout {
-                        ForEach(participants){member in
+                        ForEach(participants) {member in
                             HStack(spacing: 8) {
                                 if let pictureData = member.pictureData, let image = Image(pictureData) {
                                     image
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(width: 64, height: 64)
                                         .clipShape(
                                             RoundedRectangle(cornerRadius: 8)
                                         )
                                 }
-                                
+
                                 Text(member.firstName)
                                     .font(.body)
                             }
@@ -123,7 +124,7 @@ struct AddMemoryStage2: View {
         .navigationDestination(isPresented: $isNextStagePresented) {
             AddMemoryStage3(sheetDismiss: sheetDismiss, memoryTitle: $memoryTitle, attachments: $attachments, memoryDate: $memoryDate, details: $details, participants: $participants, location: $location)
         }
-        .sheet(isPresented: $isParticipantsSheetPresented){
+        .sheet(isPresented: $isParticipantsSheetPresented) {
             SelectParticipants(selectedMembers: $participants)
         }
     }

@@ -47,12 +47,12 @@ struct MemoryAttachmentItem: View {
         self.size = size
     }
 
-    init(color: ColorfulStyle? = nil, size: CGFloat = 65){
+    init(color: ColorfulStyle? = nil, size: CGFloat = 65) {
         self.color = color
         self.style = .error
         self.size = size
     }
-    
+
     init?(color: ColorfulStyle? = nil, _ attachment: MemoryAttachment, size: CGFloat = 65) {
         switch attachment.kind {
         case .photo:

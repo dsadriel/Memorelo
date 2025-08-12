@@ -13,7 +13,6 @@ struct MemoryDetails: View {
     @Environment(\.modelContext) var modelContext
 
     @State var isEditMemorySheetPresented: Bool = false
-
     @Query var familyMembers: [MemberProfile]
 
     var memory: Memory
@@ -27,11 +26,10 @@ struct MemoryDetails: View {
 
                     Group {
                         if let firstAttachment = memory.attachments.filter({ $0.kind != .audio }).first,
-                            let data = try? Data(
-                                contentsOf: firstAttachment.kind == .photo ? firstAttachment.url! : firstAttachment.url!
-                            ),
-                            let image = Image(data)
-                        {
+                           let data = try? Data(
+                            contentsOf: firstAttachment.kind == .photo ? firstAttachment.url! : firstAttachment.url!
+                           ),
+                           let image = Image(data) {
                             image
                                 .resizable()
                         } else {
@@ -74,12 +72,13 @@ struct MemoryDetails: View {
                                 if let pictureData = member.pictureData, let image = Image(pictureData) {
                                     image
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(width: 60, height: 60)
                                         .clipShape(
                                             RoundedRectangle(cornerRadius: 8)
                                         )
                                 }
-                                
+
                                 Text("\(Text(member.firstName).fontWeight(.semibold)) tinha \(Text(member.birthday.ageString(at: memory.date).lowercased()).fontWeight(.semibold))")
                                     .font(.body)
                                     .multilineTextAlignment(.leading)
@@ -105,7 +104,7 @@ struct MemoryDetails: View {
                         .padding(.top, 8)
                         .padding(.bottom, 4)
 
-                    FlowLayout(spacing: 4){
+                    FlowLayout(spacing: 4) {
                         ForEach(memory.attachments) { attachment in
                             MemoryAttachmentItem(attachment, size: 85)
                         }
@@ -114,6 +113,7 @@ struct MemoryDetails: View {
                 .padding()
             }
             .navigationTitle("Memória")
+            .presentationDragIndicator(.visible)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
